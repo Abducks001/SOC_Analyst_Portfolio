@@ -1,0 +1,165 @@
+SECURITY OPERATIONS CENTER (SOC)
+WINDOWS AUTHENTICATION FAILURE INVESTIGATION REPORT
+
+Project: Windows Security Log Analysis  
+Investigation Type: Authentication Failure Investigation  
+Platform: Microsoft Windows  
+Log Source: Windows Security Event Log  
+Event ID: 4625 – An Account Failed to Log On  
+Investigation Category: Blue Team / Security Monitoring  
+Analyst: Abdullah Adepoju  
+Environment: Authorized Personal Windows Lab  
+Status: Investigation Completed – Simulated Lab Exercise  
+Classification: Educational / Internal Use  
+
+---
+
+1. EXECUTIVE SUMMARY
+
+This investigation was conducted to examine failed authentication attempts on a Windows operating system using Windows Event Viewer.
+
+The primary objective was to generate controlled authentication failures, identify the corresponding security events, and analyze the recorded information to understand how Windows captures unsuccessful login attempts.
+
+Windows Security Event ID 4625 was used as the primary indicator for identifying failed logon activities.
+
+The investigation demonstrates how a SOC Analyst can use Windows security logs to monitor authentication activities, identify suspicious login patterns, and gather relevant information for further security investigation.
+
+2. INVESTIGATION OBJECTIVES
+
+The investigation was designed to achieve the following objectives:
+
+1. Generate controlled failed authentication attempts on a Windows workstation.
+2. Identify Event ID 4625 within Windows Security Logs.
+3. Examine authentication failure details.
+4. Identify the targeted user account.
+5. Examine the logon type and failure reason.
+6. Understand the relevance of source network information.
+7. Document findings and recommend appropriate security measures.
+
+3. TOOLS AND TECHNOLOGIES USED
+
+Tool				 Purpose
+ 
+Windows Event Viewer 		 Security event monitoring and analysis 
+Windows Security Logs 		 Authentication event collection 
+PowerShell 			 Security event retrieval and investigation 
+Microsoft Windows 		 Investigation environment 
+
+4. INVESTIGATION METHODOLOGY
+
+The investigation followed these procedures:
+
+Step 1: Generating Authentication Failures
+
+Controlled incorrect password entries were performed on the authorized Windows workstation to generate failed authentication events.
+
+Step 2: Accessing Windows Security Logs
+
+Windows Event Viewer was opened using the `eventvwr.msc` command.
+
+The following navigation path was used:
+
+`Windows Logs → Security`
+
+Step 3: Filtering Security Events
+
+The Security log was filtered using Event ID:
+
+`4625`
+
+This isolated recorded failed logon events for examination.
+
+Step 4: PowerShell Investigation
+
+The following PowerShell command was used to retrieve recent failed authentication events:
+
+```powershell
+Get-WinEvent -FilterHashtable @{
+    LogName = 'Security'
+    Id = 4625
+} -MaxEvents 10 |
+Format-List TimeCreated, Id, Message
+```
+
+Step 5: Event Examination
+
+The available event details were examined to understand the authentication failure, targeted account, logon type, and available source network information.
+
+5. TECHNICAL FINDINGS
+
+The following fields are relevant to the investigation of Windows Event ID 4625:
+
+Field        		 Security Significance
+
+Event ID: 4625 		   Indicates a failed logon attempt 
+Account Name 		   Identifies the account involved 
+Failure Reason 		   Explains why authentication failed 
+Logon Type 		   Identifies the authentication method 
+Source Network Address 	   May identify the remote source 
+Time Created 	           Establishes the event timestamp 
+
+Important observation: A local interactive login failure may not contain a remote source IP address. The absence of an IP address does not automatically indicate a logging problem.
+
+6. SECURITY ANALYSIS
+
+Repeated failed authentication attempts can indicate several security conditions, including:
+
+- Incorrect password entry by a legitimate user.
+- Password guessing attempts.
+- Brute-force authentication activity.
+- Attempts to access unauthorized user accounts.
+- Automated authentication attempts against exposed services.
+
+A single Event ID 4625 is not sufficient evidence to establish malicious activity.
+
+A proper SOC investigation should examine the frequency of failures, targeted accounts, logon types, source addresses, timestamps, and any subsequent successful authentication events.
+
+7. RISK ASSESSMENT
+
+Potential Security Risk: Unauthorized account access.
+
+Severity: Undetermined pending event analysis.
+
+Reason: Failed authentication events can be associated with legitimate user errors or malicious authentication attempts. Additional evidence is required before assigning a definitive severity.
+
+8. RECOMMENDED SECURITY MEASURES
+
+Based on the investigation objectives, the following defensive measures are recommended:
+
+1. Monitor repeated Event ID 4625 occurrences.
+2. Investigate unusual authentication patterns.
+3. Review successful logins following multiple failed attempts.
+4. Enable appropriate Windows audit policies.
+5. Implement account lockout policies where appropriate.
+6. Enforce strong passwords and multifactor authentication.
+7. Forward relevant Windows security events to a SIEM solution for centralized monitoring.
+8. Investigate suspicious source addresses and account activity before taking containment actions.
+
+9. CONCLUSION
+
+This practical investigation demonstrates the importance of Windows Security Event Logs in authentication monitoring and security incident detection.
+
+By examining Event ID 4625, a SOC Analyst can identify unsuccessful authentication activities and gather evidence that may support the detection of unauthorized access attempts.
+
+The exercise provided practical exposure to Windows Event Viewer, PowerShell-based event retrieval, authentication monitoring, and basic security investigation procedures.
+
+These skills form an important foundation for further development in Security Operations Center activities, particularly security monitoring, alert triage, and incident response.
+
+10. EVIDENCE AND DOCUMENTATION
+
+The following evidence should be attached to the completed investigation:
+
+- Screenshot of Windows Event Viewer showing Event ID 4625.
+- Screenshot of the General tab of a selected failed logon event.
+- Screenshot of PowerShell displaying retrieved authentication events.
+- Relevant event details, including timestamps and failure reasons.
+
+Final Analyst Note:
+
+This report documents an authorized educational investigation. No external systems were targeted, and the exercise was conducted to understand Windows authentication monitoring and defensive security operations.
+
+---
+
+Prepared by:  
+Abdullah Adepoju  
+SOC Analyst Portfolio – Practical Investigation Series
