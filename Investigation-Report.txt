@@ -12,7 +12,6 @@ Environment: Authorized Personal Windows Lab
 Status: Investigation Completed – Simulated Lab Exercise  
 Classification: Educational / Internal Use  
 
----
 
 1. EXECUTIVE SUMMARY
 
